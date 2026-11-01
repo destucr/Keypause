@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# SwiftPM / build output
+.build/
+.swiftpm/
+/build/
+/dist/
+DerivedData/
+*.xcodeproj/xcuserdata/
+xcuserdata/
+
+# Editors
+.idea/
+.vscode/
+
+# Claude Code local settings
+.claude/settings.local.json
