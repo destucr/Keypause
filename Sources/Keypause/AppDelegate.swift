@@ -38,10 +38,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     func applicationWillTerminate(_ notification: Notification) { session.stop() }
 
     private func updateIcon() {
-        let name = session.isActive ? "keyboard.fill" : "keyboard"
-        let image = NSImage(systemSymbolName: name, accessibilityDescription: "Keypause")
-        image?.isTemplate = true
-        statusItem.button?.image = image
+        statusItem.button?.image = Self.menuBarIcon(locked: session.isActive)
+        statusItem.button?.toolTip = "Keypause"
+    }
+
+    /// Keypause's own menu bar glyph: a keycap with a pause symbol.
+    /// Outlined when idle; solid with the bars knocked out while the keyboard is locked.
+    private static func menuBarIcon(locked: Bool) -> NSImage {
+        let image = NSImage(size: NSSize(width: 18, height: 18), flipped: false) { _ in
+            let cap = NSBezierPath(roundedRect: NSRect(x: 1.5, y: 2.5, width: 15, height: 13), xRadius: 4, yRadius: 4)
+            let bars = NSBezierPath()
+            bars.append(NSBezierPath(roundedRect: NSRect(x: 5.6, y: 5.8, width: 2.3, height: 6.4), xRadius: 0.8, yRadius: 0.8))
+            bars.append(NSBezierPath(roundedRect: NSRect(x: 10.1, y: 5.8, width: 2.3, height: 6.4), xRadius: 0.8, yRadius: 0.8))
+            NSColor.black.set()
+            if locked {
+                cap.append(bars)
+                cap.windingRule = .evenOdd // bars become holes in the solid key
+                cap.fill()
+            } else {
+                cap.lineWidth = 1.4
+                cap.stroke()
+                bars.fill()
+            }
+            return true
+        }
+        image.isTemplate = true
+        image.accessibilityDescription = locked ? "Keypause (keyboard locked)" : "Keypause"
+        return image
     }
 
     // MARK: Menu (rebuilt each time it opens so state is always fresh)
