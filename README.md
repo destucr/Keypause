@@ -68,7 +68,38 @@ Keypause **never reads, stores, or sends your keystrokes**: the lock just drops 
 ## Good to know
 
 - **The power / Touch ID button can't be blocked** by any software, so it still works.
-- **After an update, macOS may ask for permission again.** Keypause is ad-hoc signed, so every new version looks like a different app to macOS. If the switch is already on but Keypause still asks, select it in the list, remove it with **−**, and add it again with **+**.
+
+## Troubleshooting
+
+**macOS still says Keypause needs permission, even though the switch is on.**
+macOS ties each grant to the exact app that received it, and a stale entry (often left by an update or an earlier copy of the app) can look enabled while doing nothing. Either remove Keypause from the list with **−** and add it back with **+**, or reset it from Terminal and grant it again:
+
+```sh
+tccutil reset Accessibility com.destucr.Keypause
+tccutil reset ListenEvent   com.destucr.Keypause
+```
+
+Then quit and reopen Keypause and click **Grant Access…**.
+
+**"Keypause can't be opened" / "cannot verify the developer".**
+Right-click the app → **Open**, or clear the quarantine flag:
+
+```sh
+xattr -dr com.apple.quarantine /Applications/Keypause.app
+```
+
+**Keypause is stuck or you want to quit it from Terminal.**
+
+```sh
+pkill -x Keypause
+```
+
+**Start from scratch** (removes the app, its settings and its permissions):
+
+```sh
+brew uninstall --cask --zap keypause   # if installed with Homebrew
+tccutil reset All com.destucr.Keypause
+```
 
 ## Build from source
 
