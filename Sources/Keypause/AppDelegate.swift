@@ -6,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private let session = CleaningSession()
     private lazy var overlay = OverlayController(session: session)
     private var statusItem: NSStatusItem!
+    private lazy var welcome = WelcomeWindowController { [weak self] in self?.startCleaning() }
 
     private let durations: [(label: String, seconds: TimeInterval)] = [
         ("30 seconds", 30), ("1 minute", 60), ("2 minutes", 120),
@@ -33,6 +34,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             self.updateIcon()
             if self.session.isActive { self.overlay.show(dimScreen: self.dimScreen) } else { self.overlay.hide() }
         }
+
+        // Show a welcome window when the user opens the app themselves, but stay quiet at login.
+        let event = NSAppleEventManager.shared().currentAppleEvent
+        let launchedAtLogin = event?.paramDescriptor(forKeyword: keyAEPropData)?.enumCodeValue == keyAELaunchedAsLogInItem
+        if !launchedAtLogin { welcome.show() }
+    }
+
+    // Opening Keypause again (Spotlight, Finder) while it's running brings the window back.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if !session.isActive { welcome.show() }
+        return true
     }
 
     func applicationWillTerminate(_ notification: Notification) { session.stop() }
