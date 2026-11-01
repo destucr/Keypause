@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Keypause: lock your Mac's keyboard while you clean it</title>
+<title>Keypause for Mac</title>
 <meta name="description" content="Keypause switches every key on your Mac off while you clean the keyboard, then switches them back on. Free and open source.">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="assets/icon.png">
@@ -16,22 +16,23 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://destucr.github.io/Keypause/assets/og.png">
 <style>
+  /* layout: one left-aligned column; facts in plain rows; one accent used for the single main action */
   :root {
     --bg: #ffffff;
-    --ink: #15161a;
-    --soft: #55575f;
-    --rule: #e4e4e8;
-    --code: #f3f3f5;
+    --ink: #171512;
+    --soft: #5c5750;
+    --rule: #e9e5df;
+    --code: #f5f2ee;
     --accent: #b84f17;       /* the app's sunrise orange, darkened for text contrast */
     --on-accent: #ffffff;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #0e0f13;
-      --ink: #eeede9;
-      --soft: #a3a5ad;
-      --rule: #272930;
-      --code: #1a1c22;
+      --bg: #100e0c;
+      --ink: #efebe5;
+      --soft: #a8a199;
+      --rule: #2b2824;
+      --code: #1c1916;
       --accent: #ffa35c;
       --on-accent: #1c1208;
     }
@@ -44,6 +45,8 @@
   }
   a { color: var(--accent); text-underline-offset: 3px; }
   a:hover { text-decoration-thickness: 2px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  h1, h2 { text-wrap: balance; }
   code, pre, kbd { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
   code { font-size: .9em; background: var(--code); padding: .1em .35em; border-radius: 4px; }
 
@@ -82,10 +85,6 @@
   dt { font-weight: 650; }
   dd { margin: 0; color: var(--soft); max-width: 60ch; }
 
-  ul.notes { margin: 0; padding-left: 1.1em; max-width: 62ch; color: var(--soft); }
-  ul.notes li { margin: 0 0 12px; }
-  ul.notes strong { color: var(--ink); }
-  pre { background: var(--code); padding: 12px 16px; border-radius: 8px; font-size: 14px; overflow-x: auto; margin: 10px 0 0; color: var(--ink); }
 
   footer { margin-top: 96px; padding: 28px 0 56px; border-top: 1px solid var(--rule); font-size: 15px; color: var(--soft);
     display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
@@ -108,12 +107,12 @@
 
   <div class="hero">
     <h1>Press one button.<br>Wipe your keyboard.<br>Done.</h1>
-    <p class="lead">Keypause is a free Mac app that switches every key off for a minute or two while you clean your keyboard, then switches them back on. Wiping presses keys, and that can close windows, quit apps or send a message you haven't finished.</p>
+    <p class="lead">Keypause is a free Mac app that switches every key off for a minute or two while you clean your keyboard, then switches them back on. Wiping presses keys, and that can close windows, quit apps or send a message you haven't finished. Until now you either shut the Mac down or hoped for the best.</p>
     <div class="get">
       <a class="dl" href="https://github.com/destucr/Keypause/releases/latest">Download for Mac</a>
       <span class="alt">or with Homebrew: <span class="cmd"><code id="brew">brew install --cask destucr/tap/keypause</code><button type="button" id="copy">Copy</button></span></span>
     </div>
-    <p class="meta">Free, MIT licensed. macOS 14 or later, Apple silicon.</p>
+    <p class="meta">Free, MIT licensed. macOS 14 or later, Apple silicon. First time you open the download, <span style="white-space:nowrap">right-click</span> the app and choose Open.</p>
   </div>
 
   <figure>
@@ -135,19 +134,9 @@
     </dl>
   </section>
 
-  <section>
-    <h2>Good to know</h2>
-    <ul class="notes">
-      <li><strong>It asks for Accessibility permission.</strong> That is how macOS lets an app intercept key presses. The welcome window walks you through it.</li>
-      <li><strong>It isn't notarized</strong>, because that needs a paid Apple developer account. Homebrew skips the warning. If you download the DMG, right-click the app and choose Open the first time.
-        <pre>xattr -dr com.apple.quarantine /Applications/Keypause.app</pre></li>
-      <li><strong>The power button still works.</strong> No software can block it.</li>
-    </ul>
-  </section>
-
   <footer>
     <span>MIT license. Made by Destu Cikal.</span>
-    <span><a href="https://github.com/destucr/Keypause">Source</a> · <a href="https://github.com/destucr/Keypause/releases">Releases</a> · <a href="https://github.com/destucr/Keypause/issues">Issues</a></span>
+    <span><a href="https://github.com/destucr/Keypause">Source</a> · <a href="https://github.com/destucr/Keypause/releases">Releases</a> · <a href="https://github.com/destucr/Keypause/issues">Issues</a> · <a href="https://github.com/destucr/Keypause/blob/main/docs/HELP.md">Help</a></span>
   </footer>
 
 </div>
