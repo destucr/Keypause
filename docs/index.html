@@ -59,12 +59,13 @@
   .lead { margin: 0 0 32px; font-size: 20px; color: var(--soft); }
   .lead kbd { color: var(--ink); }
 
-  .get { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
-  .cmd { display: flex; align-items: center; gap: 4px; background: var(--code); border-radius: 8px; padding: 6px 6px 6px 16px; font-size: 15px; }
-  .cmd button { font: inherit; font-size: 14px; font-family: -apple-system, system-ui, sans-serif; cursor: pointer; border: 0; border-radius: 6px;
-    padding: 8px 12px; background: transparent; color: var(--soft); }
+  .get { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; }
+  .alt { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 15px; color: var(--soft); }
+  .cmd { display: inline-flex; align-items: center; gap: 2px; background: var(--code); border-radius: 8px; padding: 3px 3px 3px 12px; font-size: 14px; }
+  .cmd button { font: inherit; font-size: 13px; font-family: -apple-system, system-ui, sans-serif; cursor: pointer; border: 0; border-radius: 6px;
+    padding: 6px 10px; background: transparent; color: var(--soft); }
   .cmd button:hover { color: var(--ink); background: var(--rule); }
-  .dl { background: var(--accent); color: var(--on-accent); font-weight: 600; text-decoration: none; padding: 11px 18px; border-radius: 8px; }
+  .dl { background: var(--accent); color: var(--on-accent); font-weight: 600; text-decoration: none; padding: 13px 22px; border-radius: 8px; font-size: 18px; }
   .dl:hover { filter: brightness(1.08); }
   .meta { margin: 18px 0 0; font-size: 15px; color: var(--soft); }
 
@@ -107,10 +108,10 @@
 
   <div class="hero">
     <h1>Press one button.<br>Wipe your keyboard.<br>Done.</h1>
-    <p class="lead">Wiping a keyboard presses its keys. That can close windows, quit apps and send messages you haven't finished writing. Keypause switches every key off for a minute or two while you clean, then switches them back on.</p>
+    <p class="lead">Keypause is a free Mac app that switches every key off for a minute or two while you clean your keyboard, then switches them back on. Wiping presses keys, and that can close windows, quit apps or send a message you haven't finished.</p>
     <div class="get">
-      <div class="cmd"><code id="brew">brew install --cask destucr/tap/keypause</code><button type="button" id="copy">Copy</button></div>
-      <a class="dl" href="https://github.com/destucr/Keypause/releases/latest">Download the DMG</a>
+      <a class="dl" href="https://github.com/destucr/Keypause/releases/latest">Download for Mac</a>
+      <span class="alt">or with Homebrew: <span class="cmd"><code id="brew">brew install --cask destucr/tap/keypause</code><button type="button" id="copy">Copy</button></span></span>
     </div>
     <p class="meta">Free, MIT licensed. macOS 14 or later, Apple silicon.</p>
   </div>
@@ -128,8 +129,8 @@
     <dl>
       <div class="row"><dt>Turns every key off</dt><dd>Letters, shortcuts, function keys and the media keys. Your mouse and trackpad keep working, so Unlock is always one click away.</dd></div>
       <div class="row"><dt>Starts from anywhere</dt><dd>Press <kbd>⌃⌥⌘K</kbd>, click the keycap in the menu bar, or run <code>keypause start 90</code> in Terminal for 90 seconds.</dd></div>
-      <div class="row"><dt>Stays out of your way</dt><dd>The small island at the top of the screen doesn't take focus, so a video keeps playing while you clean. The screen stays awake. On a notched MacBook the island grows out of the notch.</dd></div>
-      <div class="row"><dt>Always ends</dt><dd>You pick 30 seconds to 10 minutes. When the timer runs out the keys come back on their own. Instead of a progress bar, a night turns to sunrise and the keycap mascot wakes up.</dd></div>
+      <div class="row"><dt>Stays out of your way</dt><dd>A small panel at the top of the screen shows the countdown. It doesn't take focus, so a video keeps playing while you clean, and the screen stays awake. On a MacBook with a notch the panel grows out of it.</dd></div>
+      <div class="row"><dt>Always ends</dt><dd>You pick 30 seconds to 10 minutes. When the timer runs out the keys come back on their own. Instead of a progress bar, the panel shows a night turning to sunrise, and a little keycap character wakes up.</dd></div>
       <div class="row"><dt>Keeps to itself</dt><dd>It never reads, stores or sends what you type. The only network request is an optional update check, once a day at most, against this project's GitHub releases.</dd></div>
     </dl>
   </section>
