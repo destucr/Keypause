@@ -1,45 +1,92 @@
-<p align="center"><img src="Resources/AppIcon.png" width="128" alt="Keypause icon"></p>
+<p align="center">
+  <img src="Resources/AppIcon.png" width="128" alt="Keypause icon">
+</p>
 
-# Keypause
+<h1 align="center">Keypause</h1>
 
-Lock your Mac's keyboard while you clean it. A tiny menu bar app that gets out of your way.
+<p align="center">
+  <b>Wipe your keyboard without typing gibberish, closing windows, or sending half a message.</b><br>
+  A tiny menu bar app that locks every key for a few minutes, then gives them back.
+</p>
 
-## Features
+<p align="center">
+  <a href="https://github.com/destucr/Keypause/releases/latest"><img alt="Download" src="https://img.shields.io/github/v/release/destucr/Keypause?label=download"></a>
+  <img alt="macOS 14+" src="https://img.shields.io/badge/macOS-14%2B-blue">
+  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green">
+</p>
 
-- **Menu bar only** – no Dock icon, no windows in your way.
-- **Locks every key**, including media, volume and brightness keys. Mouse and trackpad keep working.
-- **Doesn't interrupt what you're doing** – a small floating pill shows the countdown and an **Unlock** button without stealing focus, so a video keeps playing (even full screen).
-- **Notch-aware** – on MacBooks with a notch, the HUD grows out of the notch like an island; on other Macs it's a pill in the top-right corner.
-- **Auto-unlock** when the timer ends (30 s, 1, 2, 5 or 10 min).
-- **Keeps the display awake** while locked.
-- Optional **Dim Screen While Locked** (off by default; you can still click through it).
-- Launch at Login.
+---
+
+## The problem
+
+Cleaning a laptop keyboard means pressing it a hundred times by accident: a stray `⌘W` closes your window, `⌘Q` quits your app, a brush stroke fires off a half-typed message. The usual fixes are to shut the lid (and lose your session), turn the Mac off, or just be careful and hope.
+
+## The fix
+
+Click the keycap in your menu bar, pick a time, and wipe away. Every key is ignored until the timer ends. When it does, your keyboard comes back on its own.
+
+```
+Click the menu bar icon  →  Start Cleaning  →  wipe  →  keys unlock automatically
+```
+
+## Why it's pleasant to use
+
+- **It stays out of your way.** A small floating HUD shows the countdown and an **Unlock** button. It never steals focus, so a video keeps playing, even full screen, while you clean.
+- **Made for the notch.** On notched MacBooks the HUD grows out of the notch like an island and tucks back in when you're done. On other Macs it's a clean pill under the menu bar.
+- **Locks *everything*.** Letters, modifiers, function keys, and media, volume and brightness keys. Your mouse and trackpad keep working, so you can always click **Unlock**.
+- **Never gets stuck.** The timer always ends (30 s, 1, 2, 5 or 10 min), and the **Unlock** button is one click away.
+- **Won't fall asleep on you.** The display stays awake while locked, so the screen saver can't interrupt mid-wipe.
+- **Optional focus mode.** *Dim Screen While Locked* darkens your displays (off by default, and you can still click through it).
+- **Quiet by design.** Lives in the menu bar only: no Dock icon, no windows, and an optional *Launch at Login*.
 
 ## Install
 
-Download `Keypause.zip` from [Releases](../../releases), unzip, and move `Keypause.app` to `/Applications`.
+### Homebrew (recommended)
 
-The app is ad-hoc signed (not notarized), so the first time: right-click → **Open**, or run
-`xattr -dr com.apple.quarantine /Applications/Keypause.app`.
+```sh
+brew install --cask destucr/tap/keypause
+```
 
-Then allow it in **System Settings → Privacy & Security → Accessibility** (required to intercept key events).
+### Download
+
+Grab `Keypause.dmg` from [**Releases**](https://github.com/destucr/Keypause/releases/latest), open it, and drag **Keypause** to **Applications**.
+
+> **First launch:** Keypause isn't notarized by Apple (that requires a paid developer account), so macOS may say it can't verify the app. Right-click the app and choose **Open**, or run:
+> ```sh
+> xattr -dr com.apple.quarantine /Applications/Keypause.app
+> ```
+> The Homebrew install does this for you.
+
+### Allow it to lock the keys (one time)
+
+To block key presses, macOS requires you to grant permission. Open **System Settings → Privacy & Security → Accessibility** (called *Device Control and Data Access* on newer macOS), switch **Keypause** on, and allow **Input Monitoring** too if it asks. Keypause's welcome window has a **Grant Access…** button that takes you straight there.
+
+## Privacy
+
+Keypause **never reads, stores, or sends your keystrokes**: the lock just drops key events before apps see them. It makes no network connections and collects nothing. The source is small enough to read in one sitting.
+
+## Good to know
+
+- **The power / Touch ID button can't be blocked** by any software, so it still works.
+- **After an update, macOS may ask for permission again.** Keypause is ad-hoc signed, so every new version looks like a different app to macOS. If the switch is already on but Keypause still asks, select it in the list, remove it with **−**, and add it again with **+**.
 
 ## Build from source
 
-Requires macOS 14+ and Xcode / Swift 6.
+Requires macOS 14+ and Xcode (Swift 6).
 
 ```sh
-./Scripts/build.sh
+./Scripts/build.sh        # builds dist/Keypause.app
 open dist/Keypause.app
+
+./Scripts/package.sh      # also produces dist/Keypause.zip and .dmg
 ```
 
-Regenerate the icon with `swift Scripts/make-icon.swift Resources/AppIcon.icns`.
+Regenerate the app icon with `swift Scripts/make-icon.swift Resources/AppIcon.icns`.
 
-## Notes
+### How it works
 
-- The physical power / Touch ID button can't be blocked by software.
-- Rebuilding changes the ad-hoc signature, so macOS may ask you to re-grant Accessibility.
+A single `CGEventTap` on the session drops key-down, key-up, modifier and system-defined (media) events while locked. The countdown, the display-sleep prevention (`IOPMAssertion`), and the notch-aware HUD (sized at runtime from `NSScreen.safeAreaInsets`, so it fits every notched Mac) are plain AppKit and SwiftUI. There are no dependencies.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) © Destu Cikal
