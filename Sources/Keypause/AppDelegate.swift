@@ -225,7 +225,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             if userInitiated { presentUpdate(r) }
         case .upToDate(let v):
             updates.available = nil
-            if userInitiated { simpleAlert("You're up to date", "Keypause \(v) is the latest version.") }
+            if userInitiated { simpleAlert("You're up to date", "Keypause \(v) is the latest version") }
         case .failed(let message):
             if userInitiated { simpleAlert("Couldn't check for updates", message) }
         }
@@ -236,7 +236,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         let brew = UpdateChecker.installedWithHomebrew
         let alert = NSAlert()
         alert.messageText = "Keypause \(r.version) is available"
-        var info = "You have \(updates.currentVersion)."
+        var info = "You have \(updates.currentVersion)"
         if !r.notes.isEmpty { info += "\n\n\(r.notes)" }
         if brew { info += "\n\nYou installed Keypause with Homebrew, so update with:\nbrew upgrade --cask keypause" }
         alert.informativeText = info

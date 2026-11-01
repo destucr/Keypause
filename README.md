@@ -16,10 +16,10 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.webp" width="600" alt="Keypause walkthrough: press the shortcut, every key switches off while a sleepy keycap mascot naps and the sky turns to sunrise, then the keys come back.">
+  <img src="docs/hero.png" width="600" alt="Keypause in three moments: every key switches off while a sleepy keycap mascot naps, the sky turns to sunrise as Kip stirs, then your keys come back.">
 </p>
 
-<p align="center"><a href="docs/demo.mp4">Watch the full-quality video</a></p>
+<p align="center"><a href="docs/demo.mp4">Watch it move (60 fps video)</a></p>
 
 ## Features
 

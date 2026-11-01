@@ -126,9 +126,10 @@ extension NSScreen {
     /// Size of the camera housing (notch) if this display has one, otherwise nil.
     /// Measured at runtime, so it is right for every notched Mac (14"/16" Pro, Air 13"/15", future models).
     var notchSize: CGSize? {
-        guard safeAreaInsets.top > 0,
-              let left = auxiliaryTopLeftArea, let right = auxiliaryTopRightArea else { return nil }
-        return CGSize(width: frame.width - left.width - right.width, height: safeAreaInsets.top)
+        // The two side areas come from the hardware geometry, so they exist even when the menu bar is hidden
+        // (when `safeAreaInsets.top` can read 0). Trust them for detection and take the height from either source.
+        guard let left = auxiliaryTopLeftArea, let right = auxiliaryTopRightArea, left.width > 0, right.width > 0 else { return nil }
+        return CGSize(width: frame.width - left.width - right.width, height: max(safeAreaInsets.top, left.height))
     }
 }
 
@@ -211,7 +212,7 @@ struct NotchHUDView: View {
                         let copy = stageCopy(remaining: session.remaining, total: session.total)
                         Text(model.celebrating ? "Good morning!" : copy.title)
                             .font(.system(size: 14, weight: .semibold))
-                        Text(model.celebrating ? "Your keys are back. Happy typing." : copy.line)
+                        Text(model.celebrating ? "Your keys are back, happy typing" : copy.line)
                             .font(.system(size: 11)).opacity(0.85)
                     }
                     Spacer(minLength: 0)
@@ -227,8 +228,7 @@ struct NotchHUDView: View {
             .foregroundStyle(ink(at: 0.62))
             .shadow(color: textHalo(at: 0.62), radius: 3, y: 1)
         }
-        .animation(.easeInOut(duration: 0.5), value: ink(at: 0.62) == .white)
-        .animation(.easeInOut(duration: 0.5), value: ink(at: 0.1) == .white)
+        // no cross-fade on the ink: a fade between white and plum passes through grey, which vanishes into the sky
     }
 }
 
@@ -244,7 +244,7 @@ struct HUDView: View {
             KipView(state: kipState(session, celebrating: model.celebrating)).frame(width: 64, height: 64)
             VStack(alignment: .leading, spacing: 1) {
                 Text(model.celebrating ? "Good morning!" : stageCopy(remaining: session.remaining, total: session.total).title).font(.system(size: 13, weight: .semibold))
-                Text(model.celebrating ? "Your keys are back." : timeString(session.remaining, suffix: " until sunrise"))
+                Text(model.celebrating ? "Your keys are back" : timeString(session.remaining, suffix: " until sunrise"))
                     .font(.system(size: 12).monospacedDigit()).opacity(0.85)
             }
             Spacer(minLength: 8)
@@ -307,10 +307,10 @@ private func wakeLead(_ total: TimeInterval) -> TimeInterval { min(11, total * 0
 /// Where we are in Kip's night, as a title and one plain line. Driven by time left, so even a 30 s session tells the whole story.
 @MainActor private func stageCopy(remaining r: TimeInterval, total: TimeInterval) -> (title: String, line: String) {
     let lead = wakeLead(total), span = max(1, total - lead), elapsed = total - r
-    if r <= lead - 4 { return ("Rise and shine!", "Your keys are coming back.") }
-    if r <= lead { return ("Kip is stirring…", "Sunrise is almost here.") }
-    if elapsed < span * 0.4 { return ("Shh, your keys are napping.", "Wipe away. They wake at sunrise.") }
-    return ("Still dreaming…", "Your keyboard is locked until sunrise.")
+    if r <= lead - 4 { return ("Rise and shine!", "Your keys are coming back") }
+    if r <= lead { return ("Kip is stirring…", "Sunrise is almost here") }
+    if elapsed < span * 0.4 { return ("Shh, your keys are napping", "Wipe away, they wake at sunrise") }
+    return ("Still dreaming…", "Your keyboard is locked until sunrise")
 }
 
 /// Kip sleeps most of the night, wakes `wakeLead` before the end, and cheers for the last few seconds.

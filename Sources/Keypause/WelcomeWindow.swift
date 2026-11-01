@@ -95,7 +95,7 @@ struct WelcomeView: View {
 
                 StepRow(number: 2, done: false,
                         title: "Start from anywhere",
-                        detail: "Or click the keycap in the menu bar. On a notched Mac it can hide behind the notch.") {
+                        detail: "Or click the keycap in the menu bar (on a notched Mac it can hide behind the notch)") {
                     Text("⌃⌥⌘K")
                         .font(.system(.callout, design: .rounded).weight(.semibold))
                         .padding(.horizontal, 8).padding(.vertical, 4)
@@ -104,7 +104,7 @@ struct WelcomeView: View {
 
                 StepRow(number: 3, done: false,
                         title: "Try it",
-                        detail: "Locks for the time you pick, then gives the keys back.") {
+                        detail: "Locks for the time you pick, then gives the keys back") {
                     Button("Start Cleaning", action: onStart)
                         .disabled(!watcher.granted)
                 }
@@ -127,13 +127,13 @@ struct WelcomeView: View {
     @ViewBuilder private var permissionRow: some View {
         switch watcher.state {
         case .allowed:
-            StepRow(number: 1, done: true, title: "Allow keyboard control", detail: "Keypause can switch your keys off.") {
+            StepRow(number: 1, done: true, title: "Allow keyboard control", detail: "Keypause can switch your keys off") {
                 Label("Allowed", systemImage: "checkmark.circle.fill").foregroundStyle(.green).font(.callout.weight(.medium))
             }
 
         case .blocked:
             StepRow(number: 1, done: false, warn: true, title: "It's on, but macOS isn't accepting it",
-                    detail: "This happens after an update, or when Input Monitoring is needed too. A reset fixes it in most cases.") {
+                    detail: "This happens after an update or when Input Monitoring is needed too, and a reset usually fixes it") {
                 VStack(alignment: .trailing, spacing: 6) {
                     Button("Reset and retry") { watcher.markRequested(); PermissionCoordinator.shared.resetAndRetry() }
                         .buttonStyle(.borderedProminent)
@@ -146,8 +146,8 @@ struct WelcomeView: View {
             if watcher.waitingSince != nil {
                 StepRow(number: 1, done: false, title: "Waiting for you…",
                         detail: watcher.waitingLong
-                            ? "Not seeing it? Switch Keypause on in the list. If it already is, reset it."
-                            : "Switch Keypause on in System Settings. This updates here by itself.") {
+                            ? "Not seeing it? Switch Keypause on in the list, or reset it if it already is"
+                            : "Switch Keypause on in System Settings, this window updates by itself") {
                     VStack(alignment: .trailing, spacing: 6) {
                         ProgressView().controlSize(.small)
                         if watcher.waitingLong {
@@ -159,7 +159,7 @@ struct WelcomeView: View {
                 }
             } else {
                 StepRow(number: 1, done: false, title: "Allow keyboard control",
-                        detail: "macOS needs your OK before an app can switch keys off.") {
+                        detail: "macOS needs your OK before an app can switch keys off") {
                     Button("Grant Access…") { watcher.markRequested(); PermissionCoordinator.shared.requestAccessibility() }
                         .buttonStyle(.borderedProminent)
                 }

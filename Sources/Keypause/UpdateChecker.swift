@@ -34,12 +34,12 @@ final class UpdateChecker {
         request.timeoutInterval = 15
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
-            guard let http = response as? HTTPURLResponse else { return .failed("No response from GitHub.") }
-            guard http.statusCode == 200 else { return .failed("GitHub answered with status \(http.statusCode).") }
+            guard let http = response as? HTTPURLResponse else { return .failed("No response from GitHub") }
+            guard http.statusCode == 200 else { return .failed("GitHub answered with status \(http.statusCode)") }
             guard let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
                   let tag = json["tag_name"] as? String, Self.isVersion(tag),
                   let page = (json["html_url"] as? String).flatMap(URL.init(string:)), Self.isOurs(page)
-            else { return .failed("Unexpected answer from GitHub.") }
+            else { return .failed("Unexpected answer from GitHub") }
 
             let latest = tag.hasPrefix("v") ? String(tag.dropFirst()) : tag
             guard Self.isNewer(latest, than: currentVersion) else { return .upToDate(currentVersion) }
