@@ -16,6 +16,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         set { UserDefaults.standard.set(newValue, forKey: "duration") }
     }
 
+    private var dimScreen: Bool {
+        get { UserDefaults.standard.bool(forKey: "dimScreen") }
+        set { UserDefaults.standard.set(newValue, forKey: "dimScreen") }
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         let menu = NSMenu()
@@ -26,7 +31,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         session.onChange = { [weak self] in
             guard let self else { return }
             self.updateIcon()
-            if self.session.isActive { self.overlay.show() } else { self.overlay.hide() }
+            if self.session.isActive { self.overlay.show(dimScreen: self.dimScreen) } else { self.overlay.hide() }
         }
     }
 
@@ -64,6 +69,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(durationItem)
 
         menu.addItem(.separator())
+        let dim = item("Dim Screen While Locked", #selector(toggleDim))
+        dim.state = dimScreen ? .on : .off
+        dim.isEnabled = !session.isActive
+        menu.addItem(dim)
         let login = item("Launch at Login", #selector(toggleLogin))
         login.state = SMAppService.mainApp.status == .enabled ? .on : .off
         menu.addItem(login)
@@ -100,6 +109,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     @objc private func pickDuration(_ sender: NSMenuItem) {
         if let s = sender.representedObject as? TimeInterval { selectedDuration = s }
     }
+
+    @objc private func toggleDim() { dimScreen.toggle() }
 
     @objc private func toggleLogin() {
         let service = SMAppService.mainApp

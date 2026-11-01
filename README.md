@@ -1,20 +1,45 @@
+<p align="center"><img src="Resources/AppIcon.png" width="128" alt="Keypause icon"></p>
+
 # Keypause
 
-A tiny macOS menu bar app that disables your keyboard while you clean it.
+Lock your Mac's keyboard while you clean it. A tiny menu bar app that gets out of your way.
 
-- Lives in the menu bar (no Dock icon).
-- **Start Cleaning** locks every key (including media/function keys) and dims the screen with a countdown.
-- The mouse/trackpad keep working, so **Unlock Now** is always one click away; it also unlocks automatically when the timer ends.
-- Keeps the display awake during the session.
+## Features
 
-## Build & run
+- **Menu bar only** – no Dock icon, no windows in your way.
+- **Locks every key**, including media, volume and brightness keys. Mouse and trackpad keep working.
+- **Doesn't interrupt what you're doing** – a small floating pill shows the countdown and an **Unlock** button without stealing focus, so a video keeps playing (even full screen).
+- **Notch-aware** – on MacBooks with a notch, the HUD grows out of the notch like an island; on other Macs it's a pill in the top-right corner.
+- **Auto-unlock** when the timer ends (30 s, 1, 2, 5 or 10 min).
+- **Keeps the display awake** while locked.
+- Optional **Dim Screen While Locked** (off by default; you can still click through it).
+- Launch at Login.
+
+## Install
+
+Download `Keypause.zip` from [Releases](../../releases), unzip, and move `Keypause.app` to `/Applications`.
+
+The app is ad-hoc signed (not notarized), so the first time: right-click → **Open**, or run
+`xattr -dr com.apple.quarantine /Applications/Keypause.app`.
+
+Then allow it in **System Settings → Privacy & Security → Accessibility** (required to intercept key events).
+
+## Build from source
+
+Requires macOS 14+ and Xcode / Swift 6.
 
 ```sh
 ./Scripts/build.sh
 open dist/Keypause.app
 ```
 
-On first use, grant **Accessibility** access in System Settings → Privacy & Security.
-(Rebuilding changes the ad-hoc signature, so you may need to re-grant after a rebuild.)
+Regenerate the icon with `swift Scripts/make-icon.swift Resources/AppIcon.icns`.
 
-Requires macOS 14+.
+## Notes
+
+- The physical power / Touch ID button can't be blocked by software.
+- Rebuilding changes the ad-hoc signature, so macOS may ask you to re-grant Accessibility.
+
+## License
+
+[MIT](LICENSE)
