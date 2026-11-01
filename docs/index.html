@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keypause: lock your Mac's keyboard while you clean it</title>
+<meta name="description" content="A free, open source Mac menu bar app that switches every key off while you clean your keyboard, then gives them back. Press one button, wipe, done.">
+<meta name="theme-color" content="#05071a">
+<link rel="icon" href="assets/icon.png">
+<link rel="canonical" href="https://destucr.github.io/Keypause/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Keypause: lock your Mac's keyboard while you clean it">
+<meta property="og:description" content="Press one button. Wipe your keyboard. Done. A free, open source Mac menu bar app.">
+<meta property="og:url" content="https://destucr.github.io/Keypause/">
+<meta property="og:image" content="https://destucr.github.io/Keypause/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://destucr.github.io/Keypause/assets/og.png">
+<style>
+  :root {
+    --bg: #05071a; --ink: #f4f1fa; --mute: #a9a5c2; --card: #0e1230; --line: #20254a;
+    --gold: #ffc46b; --rose: #ff8a7a; --violet: #7a66e0; --teal: #2bb5a6;
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  /* night sky with a sunrise glow on the horizon */
+  .sky {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(120% 70% at 50% 108%, rgba(255,196,107,.55) 0%, rgba(255,138,122,.35) 28%, rgba(122,102,224,.18) 55%, transparent 75%),
+      linear-gradient(180deg, #05071a 0%, #0a0d2c 60%, #11153a 100%);
+  }
+  .stars { position: absolute; inset: 0; pointer-events: none; opacity: .7;
+    background-image:
+      radial-gradient(1.2px 1.2px at 8% 18%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 17% 62%, #fff 50%, transparent 51%),
+      radial-gradient(1.4px 1.4px at 29% 28%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 41% 12%, #fff 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 54% 40%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 66% 20%, #fff 50%, transparent 51%),
+      radial-gradient(1.4px 1.4px at 78% 55%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 89% 15%, #fff 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 94% 48%, #fff 50%, transparent 51%),
+      radial-gradient(1px 1px at 4% 80%, #fff 50%, transparent 51%);
+    animation: twinkle 5s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { from { opacity: .35 } to { opacity: .8 } }
+  @media (prefers-reduced-motion: reduce) { .stars { animation: none } html { scroll-behavior: auto } }
+
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; position: relative; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 650; font-size: 19px; text-decoration: none; }
+  .brand img { width: 34px; height: 34px; border-radius: 8px; }
+  nav .links { display: flex; gap: 22px; font-size: 15px; color: var(--mute); }
+  nav .links a { text-decoration: none; }
+  nav .links a:hover { color: var(--ink); }
+
+  .hero { text-align: center; padding: 52px 0 64px; position: relative; }
+  h1 { font-size: clamp(40px, 7vw, 76px); line-height: 1.04; letter-spacing: -.03em; margin: 0 0 22px; font-weight: 750; }
+  h1 em { font-style: normal; background: linear-gradient(90deg, var(--gold), var(--rose)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { font-size: clamp(18px, 2.4vw, 22px); color: var(--mute); max-width: 640px; margin: 0 auto 34px; }
+
+  .cta { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; align-items: center; }
+  .brew {
+    display: inline-flex; align-items: center; gap: 12px; background: rgba(255,255,255,.06);
+    border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px 12px 18px;
+    font: 15px/1.2 ui-monospace, "SF Mono", Menlo, monospace; color: #bff3ea;
+  }
+  .brew button, .btn {
+    font: inherit; cursor: pointer; border: 0; border-radius: 10px; padding: 8px 14px;
+    background: rgba(255,255,255,.1); color: var(--ink); font-size: 14px; font-family: -apple-system, system-ui, sans-serif;
+  }
+  .brew button:hover { background: rgba(255,255,255,.18); }
+  .btn { display: inline-block; text-decoration: none; padding: 13px 20px; font-size: 16px; font-weight: 600; border-radius: 14px; }
+  .btn.primary { background: linear-gradient(90deg, var(--gold), var(--rose)); color: #2a1030; }
+  .btn.primary:hover { filter: brightness(1.06); }
+  .note { margin-top: 18px; font-size: 14px; color: var(--mute); }
+
+  .player { max-width: 860px; margin: 8px auto 0; border-radius: 22px; overflow: hidden; border: 1px solid var(--line);
+    background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 120px rgba(255,138,122,.12); }
+  .player video { display: block; width: 100%; height: auto; }
+  .player-wrap { position: relative; padding-bottom: 72px; }
+
+  section { padding: 84px 0 8px; }
+  h2 { font-size: clamp(28px, 4vw, 40px); letter-spacing: -.02em; margin: 0 0 12px; line-height: 1.15; }
+  .sub { color: var(--mute); max-width: 620px; margin: 0 0 40px; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .step, .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+  .step .n { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 14px;
+    background: linear-gradient(135deg, var(--gold), var(--rose)); color: #2a1030; margin-bottom: 14px; }
+  .step h3, .card h3 { margin: 0 0 6px; font-size: 19px; letter-spacing: -.01em; }
+  .step p, .card p { margin: 0; color: var(--mute); font-size: 16px; }
+  kbd { font: 600 14px/1 ui-rounded, -apple-system, system-ui, sans-serif; background: #e9eff3; color: #12344a; border-radius: 6px;
+    padding: 4px 7px; box-shadow: 0 2px 0 #8da2b0; margin: 0 1px; display: inline-block; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+
+  .term { background: #070a1e; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 24px; overflow-x: auto;
+    font: 15px/1.9 ui-monospace, "SF Mono", Menlo, monospace; color: #cfd3f1; white-space: pre; }
+  .term .c { color: #6f74a6; } .term .p { color: var(--teal); user-select: none; }
+
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px 22px; margin-bottom: 12px; }
+  summary { cursor: pointer; padding: 16px 0; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--mute); font-weight: 400; font-size: 22px; line-height: 1; }
+  details[open] summary::after { content: "–"; }
+  details p, details pre { color: var(--mute); margin: 0 0 18px; font-size: 16px; }
+  details pre { background: #070a1e; border-radius: 10px; padding: 12px 14px; overflow-x: auto; font: 14px/1.7 ui-monospace, Menlo, monospace; color: #cfd3f1; }
+
+  footer { margin-top: 90px; border-top: 1px solid var(--line); padding: 34px 0 56px; color: var(--mute); font-size: 15px;
+    display: flex; flex-wrap: wrap; gap: 14px 28px; justify-content: space-between; }
+  footer a { text-decoration: none; } footer a:hover { color: var(--ink); }
+
+  @media (max-width: 820px) {
+    .steps, .grid, .two { grid-template-columns: 1fr; }
+    nav .links { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="sky">
+  <div class="stars"></div>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#"><img src="assets/icon.png" alt="" width="34" height="34">Keypause</a>
+      <div class="links">
+        <a href="#how">How it works</a>
+        <a href="#install">Install</a>
+        <a href="#faq">FAQ</a>
+        <a href="https://github.com/destucr/Keypause">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <h1>Press one button.<br>Wipe your keyboard.<br><em>Done.</em></h1>
+      <p class="lead">Keypause switches every key off while you clean, then gives them back on its own. No closed windows, no half-sent messages.</p>
+      <div class="cta">
+        <div class="brew" id="brew"><span>brew install --cask destucr/tap/keypause</span><button type="button" id="copy">Copy</button></div>
+        <a class="btn primary" href="https://github.com/destucr/Keypause/releases/latest">Download for Mac</a>
+      </div>
+      <p class="note">Free and open source · macOS 14 or later · Apple silicon (M1 and newer)</p>
+    </div>
+
+    <div class="player-wrap">
+      <div class="player">
+        <video autoplay muted loop playsinline preload="metadata" poster="hero.png" aria-label="Keypause in action">
+          <source src="demo.mp4" type="video/mp4">
+          Your browser can't play this video. <a href="demo.mp4">Open it directly</a>.
+        </video>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="how">
+    <h2>Three steps, no fuss</h2>
+    <p class="sub">It lives in your menu bar and stays out of the way until you need it.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><h3>Press <kbd>⌃</kbd><kbd>⌥</kbd><kbd>⌘</kbd><kbd>K</kbd></h3><p>Or click the keycap in your menu bar, or run <code>keypause start</code> in Terminal.</p></div>
+      <div class="step"><div class="n">2</div><h3>Wipe away</h3><p>Every key is off, including shortcuts and media keys. Your mouse and trackpad still work, so Unlock is one click away.</p></div>
+      <div class="step"><div class="n">3</div><h3>Keys come back</h3><p>When the timer ends the keyboard switches itself back on and the little island tucks away.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Made to be pleasant</h2>
+    <p class="sub">A utility you open once a month still deserves some care.</p>
+    <div class="grid">
+      <div class="card"><h3>A night that ends in sunrise</h3><p>No progress bar. Kip the keycap naps while the sky turns from night to dawn, then wakes up just before your keys return.</p></div>
+      <div class="card"><h3>Never in your way</h3><p>The HUD doesn't steal focus, so a video keeps playing while you clean. The screen stays awake too.</p></div>
+      <div class="card"><h3>Grows out of the notch</h3><p>On a notched MacBook the island grows out of the notch itself. Everywhere else it's a neat pill under the menu bar.</p></div>
+      <div class="card"><h3>Always ends</h3><p>Pick 30 seconds to 10 minutes. The timer always runs out, and Unlock is always on screen.</p></div>
+      <div class="card"><h3>Scriptable</h3><p>A real <code>keypause</code> command, plus <code>keypause://</code> links for Raycast and Shortcuts.</p></div>
+      <div class="card"><h3>Private by design</h3><p>Keypause never reads, stores or sends your keystrokes. Its only network request is an optional daily update check.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>From Terminal</h2>
+    <p class="sub">Homebrew puts the <code>keypause</code> command on your PATH.</p>
+    <div class="term">
+      <div><span class="p">$</span> keypause start     <span class="c"># your chosen duration</span></div>
+      <div><span class="p">$</span> keypause start 90  <span class="c"># 90 seconds ("2m" works too)</span></div>
+      <div><span class="p">$</span> keypause stop      <span class="c"># unlock early</span></div>
+      <div><span class="p">$</span> keypause check     <span class="c"># check for updates</span></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <h2>Install</h2>
+    <p class="sub">Homebrew is the easiest route. It also skips the first-launch warning.</p>
+    <div class="two">
+      <div class="card">
+        <h3>Homebrew</h3>
+        <p style="margin-bottom:14px">One line, and updates come with <code>brew upgrade</code>.</p>
+        <div class="term" style="padding:14px 16px"><span class="p">$</span> brew install --cask destucr/tap/keypause</div>
+      </div>
+      <div class="card">
+        <h3>Download</h3>
+        <p style="margin-bottom:14px">Grab the DMG and drag Keypause to Applications.</p>
+        <a class="btn primary" style="padding:11px 18px;font-size:15px" href="https://github.com/destucr/Keypause/releases/latest">Latest release</a>
+      </div>
+    </div>
+    <p class="sub" style="margin:22px 0 0">On first run Keypause asks for permission to control your keyboard. The welcome window walks you through it.</p>
+  </section>
+
+  <section id="faq">
+    <h2>Questions</h2>
+    <p class="sub"></p>
+    <details>
+      <summary>Why does it need Accessibility permission?</summary>
+      <p>macOS only lets an app intercept key presses if you allow it under Privacy &amp; Security. Keypause uses that to drop key events before apps see them. It never looks at what you type.</p>
+    </details>
+    <details>
+      <summary>macOS says it can't verify the app</summary>
+      <p>Keypause isn't notarized because that needs a paid Apple developer account. Installing with Homebrew skips the warning. For a direct download, right-click the app and choose Open the first time, or run:</p>
+      <pre>xattr -dr com.apple.quarantine /Applications/Keypause.app</pre>
+    </details>
+    <details>
+      <summary>It's switched on but macOS still asks for permission</summary>
+      <p>This can happen after an update. The welcome window has a "Reset and retry" button, or you can reset it from Terminal and grant it again:</p>
+      <pre>tccutil reset Accessibility com.destucr.Keypause
+tccutil reset ListenEvent com.destucr.Keypause</pre>
+    </details>
+    <details>
+      <summary>Can it block the power button?</summary>
+      <p>No. The power and Touch ID button are handled by the hardware, so no software can switch them off.</p>
+    </details>
+    <details>
+      <summary>Does it phone home?</summary>
+      <p>Only for an optional update check against this project's public GitHub releases, at most once a day, and it sends nothing about you. Turn it off from the menu with Check Automatically.</p>
+    </details>
+  </section>
+
+</main>
+
+<div class="wrap">
+  <footer>
+    <span>Keypause · MIT license · made by Destu Cikal</span>
+    <span><a href="https://github.com/destucr/Keypause">Source</a> · <a href="https://github.com/destucr/Keypause/releases">Releases</a> · <a href="https://github.com/destucr/Keypause/issues">Issues</a></span>
+  </footer>
+</div>
+
+<script>
+  document.getElementById('copy').addEventListener('click', function () {
+    var btn = this, text = 'brew install --cask destucr/tap/keypause';
+    (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject()).then(function () {
+      btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1600);
+    }).catch(function () {
+      var r = document.createRange(); r.selectNodeContents(btn.previousElementSibling);
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Press ⌘C'; setTimeout(function () { btn.textContent = 'Copy'; }, 2200);
+    });
+  });
+</script>
+</body>
+</html>

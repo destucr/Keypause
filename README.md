@@ -19,7 +19,7 @@
   <img src="docs/hero.png" width="600" alt="Keypause in three moments: every key switches off while a sleepy keycap mascot naps, the sky turns to sunrise as Kip stirs, then your keys come back.">
 </p>
 
-<p align="center"><a href="docs/demo.mp4">Watch it move (60 fps video)</a></p>
+<p align="center"><a href="https://destucr.github.io/Keypause/">Website</a> · <a href="docs/demo.mp4">Watch it move (60 fps video)</a></p>
 
 ## Features
 
@@ -33,6 +33,8 @@
 - **Notch-friendly.** On a MacBook with a notch, the HUD grows out of it.
 
 ## Install
+
+For Apple silicon Macs (M1 and newer) on macOS 14 or later.
 
 ```sh
 brew install --cask destucr/tap/keypause
