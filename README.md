@@ -16,8 +16,10 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.gif" width="560" alt="Keypause walkthrough: press the shortcut, every key switches off while a sleepy keycap mascot naps and the sky turns to sunrise, then the keys come back.">
+  <img src="docs/demo.webp" width="600" alt="Keypause walkthrough: press the shortcut, every key switches off while a sleepy keycap mascot naps and the sky turns to sunrise, then the keys come back.">
 </p>
+
+<p align="center"><a href="docs/demo.mp4">Watch the full-quality video</a></p>
 
 ## Features
 
@@ -45,12 +47,16 @@ On first run, switch Keypause on in **System Settings → Privacy & Security →
 ## Terminal
 
 ```sh
-open "keypause://start"             # your chosen duration
-open "keypause://start?seconds=90"  # custom duration
-open "keypause://stop"              # unlock early
+keypause start       # your chosen duration
+keypause start 90    # 90 seconds ("90s" and "2m" work too, up to 5 minutes)
+keypause stop        # unlock early
+keypause check       # check for updates
 ```
 
-Works with Raycast and Shortcuts too.
+Homebrew installs the `keypause` command for you. If you installed another way:
+`ln -s /Applications/Keypause.app/Contents/Resources/keypause /usr/local/bin/keypause`
+
+Raycast and Shortcuts can open `keypause://start` and `keypause://stop`.
 
 ## Privacy
 
