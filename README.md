@@ -50,19 +50,6 @@ Works with Raycast and Shortcuts too.
 
 Keypause never reads, stores or sends your keystrokes, and makes no network connections.
 
-## Troubleshooting
-
-**Permission is on but Keypause still asks.** macOS can keep a stale entry after an update. Reset it and grant again:
-
-```sh
-tccutil reset Accessibility com.destucr.Keypause
-tccutil reset ListenEvent   com.destucr.Keypause
-```
-
-**"Can't be opened".** `xattr -dr com.apple.quarantine /Applications/Keypause.app`
-
-The power / Touch ID button can't be blocked by software.
-
 ## Build
 
 Requires macOS 14+ and Xcode.
@@ -73,4 +60,4 @@ Requires macOS 14+ and Xcode.
 
 ## License
 
-[MIT](LICENSE) © Destu Cikal
+[MIT](LICENSE) © Destu Cikal · [Need help?](docs/HELP.md)
