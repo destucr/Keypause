@@ -12,6 +12,7 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/Keypause"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 cp Resources/lottie/*.json "$APP/Contents/Resources/"
+install -m 755 Scripts/keypause "$APP/Contents/Resources/keypause"   # command-line helper (Homebrew links it onto PATH)
 
 cat > "$APP/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>

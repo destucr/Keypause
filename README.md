@@ -16,7 +16,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/demo.gif" width="500" alt="Keypause: Kip naps while the keyboard is locked; the sky turns from night to sunrise, then Kip wakes and cheers when the keys are back.">
+  <img src="docs/demo.gif" width="560" alt="Keypause walkthrough: press the shortcut, every key switches off while a sleepy keycap mascot naps and the sky turns to sunrise, then the keys come back.">
 </p>
 
 ## Features
