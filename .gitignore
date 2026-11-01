@@ -18,3 +18,6 @@ xcuserdata/
 
 # Claude Code local settings
 .claude/settings.local.json
+
+# Local Claude Code config
+.claude/

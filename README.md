@@ -15,6 +15,10 @@
   <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green">
 </p>
 
+<p align="center">
+  <img src="docs/demo.gif" width="500" alt="Keypause: Kip naps while the keyboard is locked; the sky turns from night to sunrise, then Kip wakes and cheers when the keys are back.">
+</p>
+
 ## Features
 
 - **Every key off**, including shortcuts, function keys and media keys. Mouse and trackpad keep working.
@@ -22,7 +26,9 @@
 - **Starts from anywhere** with `⌃⌥⌘K`, the menu bar, or Terminal.
 - **Always ends.** Pick 30 s to 10 min. The keys come back when the timer does.
 - **Screen stays awake** while locked.
-- **Notch-friendly.** The HUD grows out of the notch on MacBooks that have one.
+- **A night that ends in sunrise.** Kip the keycap naps while your keys are off. The sky goes from night to dawn as the timer runs, and he wakes up just before the keys come back. No progress bar.
+- **Update checks.** **Check for Updates…** in the menu tells you when a new version is out. Homebrew users get the `brew upgrade` command.
+- **Notch-friendly.** On a MacBook with a notch, the HUD grows out of it.
 
 ## Install
 
@@ -48,7 +54,7 @@ Works with Raycast and Shortcuts too.
 
 ## Privacy
 
-Keypause never reads, stores or sends your keystrokes, and makes no network connections.
+Keypause never reads, stores or sends your keystrokes. Its only network request is an update check against this project's public GitHub releases, at most once a day, and it sends nothing about you. Turn it off from the menu (**Check Automatically**). It never installs anything by itself.
 
 ## Build
 

@@ -11,6 +11,7 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/Keypause"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
+cp Resources/lottie/*.json "$APP/Contents/Resources/"
 
 cat > "$APP/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -22,16 +23,29 @@ cat > "$APP/Contents/Info.plist" <<PLIST
   <key>CFBundleIdentifier</key><string>com.destucr.Keypause</string>
   <key>CFBundleExecutable</key><string>Keypause</string>
   <key>CFBundlePackageType</key><string>APPL</string>
-  <key>CFBundleShortVersionString</key><string>1.0.1</string>
-  <key>CFBundleVersion</key><string>2</string>
+  <key>CFBundleShortVersionString</key><string>1.0.2</string>
+  <key>CFBundleVersion</key><string>3</string>
   <key>LSMinimumSystemVersion</key><string>14.0</string>
   <key>CFBundleIconFile</key><string>AppIcon</string>
+  <key>CFBundleURLTypes</key>
+  <array><dict>
+    <key>CFBundleURLName</key><string>com.destucr.Keypause</string>
+    <key>CFBundleURLSchemes</key><array><string>keypause</string></array>
+  </dict></array>
   <key>LSUIElement</key><true/>
   <key>NSHighResolutionCapable</key><true/>
 </dict>
 </plist>
 PLIST
 
-# Ad-hoc sign so macOS treats it as a stable bundle for permissions.
-codesign --force --sign - "$APP"
+# Sign with a stable identity when one exists (override with SIGN_IDENTITY=...). A stable identity
+# lets macOS keep the Accessibility grant across rebuilds and updates; ad-hoc signing cannot.
+IDENTITY="${SIGN_IDENTITY:-$(security find-identity -v -p codesigning | awk '/Apple Development|Developer ID Application/{print $2; exit}')}"
+if [ -n "$IDENTITY" ]; then
+  codesign --force --options runtime --sign "$IDENTITY" "$APP"
+  echo "Signed with identity $IDENTITY"
+else
+  codesign --force --options runtime --sign - "$APP"
+  echo "Ad-hoc signed (no signing identity found; permissions reset on every rebuild)"
+fi
 echo "Built $APP"
