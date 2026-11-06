@@ -60,3 +60,19 @@
   lockBtn.addEventListener('click', lock);
   unlockBtn.addEventListener('click', function () { unlock(false); });
 })();
+
+(function () {
+  var b = document.querySelector('.copy-btn');
+  if (!b) return;
+  b.addEventListener('click', function () {
+    var t = b.getAttribute('data-copy');
+    var ok = function () { b.textContent = 'Copied'; b.classList.add('done'); setTimeout(function () { b.textContent = 'Copy'; b.classList.remove('done'); }, 1800); };
+    if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(t).then(ok, fallback); } else { fallback(); }
+    function fallback() {
+      var a = document.createElement('textarea'); a.value = t; a.style.position = 'fixed'; a.style.opacity = '0';
+      document.body.appendChild(a); a.select();
+      try { document.execCommand('copy'); ok(); } catch (e) {}
+      document.body.removeChild(a);
+    }
+  });
+})();
