@@ -21,3 +21,6 @@ xcuserdata/
 
 # Local Claude Code config
 .claude/
+
+# Design skill working files
+.taste-skill/
