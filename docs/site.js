@@ -76,3 +76,16 @@
     }
   });
 })();
+
+/* the overscroll area shows the page background: blue at the top, coral once the install section is reached */
+(function () {
+  var root = document.documentElement, inst = document.getElementById('install');
+  if (!inst) return;
+  function paint() {
+    var low = inst.getBoundingClientRect().top < window.innerHeight * 0.5;
+    root.style.background = low ? '#ff4f6d' : '#2f7df0';
+  }
+  paint();
+  window.addEventListener('scroll', paint, { passive: true });
+  window.addEventListener('resize', paint);
+})();

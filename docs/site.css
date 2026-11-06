@@ -2,7 +2,7 @@
 @font-face { font-family: "Schibsted Grotesk"; src: url(assets/fonts/schibsted-grotesk.woff2) format("woff2"); font-weight: 400 800; font-display: swap; }
 :root { --ink: #1c1718; --yellow: #ffe14d; --blue: #2f7df0; --teal: #0fa292; --purple: #8c3df5; --coral: #ff4f6d; }
 * { box-sizing: border-box; margin: 0; }
-html { background: linear-gradient(to bottom, var(--blue) 50%, var(--coral) 50%); scroll-behavior: smooth; scroll-padding-top: 90px; }
+html { background: var(--blue); scroll-behavior: smooth; scroll-padding-top: 90px; }
 body { font-family: "Schibsted Grotesk", system-ui, sans-serif; color: #fff; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 a { color: inherit; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
