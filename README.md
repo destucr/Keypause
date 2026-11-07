@@ -42,8 +42,6 @@ brew install --cask destucr/tap/keypause
 
 Or download `Keypause.dmg` from [Releases](https://github.com/destucr/Keypause/releases/latest) and drag it to Applications.
 
-Keypause isn't notarized (no paid Apple developer account), so after a manual download, right-click → **Open** the first time. Homebrew handles this for you.
-
 On first run, switch Keypause on in **System Settings → Privacy & Security → Accessibility** (called *Device Control and Data Access* on newer macOS). The welcome window has a button that opens it.
 
 ## Terminal
