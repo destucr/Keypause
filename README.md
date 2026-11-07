@@ -60,7 +60,7 @@ Raycast and Shortcuts can open `keypause://start` and `keypause://stop`.
 
 ## Privacy
 
-Keypause never reads, stores or sends your keystrokes. Its only network request is an update check against this project's public GitHub releases, at most once a day, and it sends nothing about you. Turn it off from the menu (**Check Automatically**). It never installs anything by itself.
+Keypause never reads, stores or sends your keystrokes. Its only network request is an update check against this project's public GitHub releases, at most once a day, and it sends nothing about you. Turn it off from the menu (**Check Automatically**).
 
 ## Build
 
