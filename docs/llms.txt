@@ -1,0 +1,29 @@
+# Keypause
+
+> Keypause is a free, open source macOS menu bar app that switches every key on the keyboard off while you clean it, then switches them back on by itself when a timer ends. The mouse and trackpad keep working. It is made by Destu Cikal and released under the MIT license.
+
+Use it when you want to wipe a Mac keyboard without typing random characters or triggering shortcuts, and without putting the Mac to sleep first.
+
+## How it works
+
+- Press Control, Option, Command and K from anywhere, use the menu bar icon, or run `keypause start` in Terminal.
+- Every key is off for a duration you choose, from 30 seconds to 10 minutes. This includes shortcuts, function keys and media keys.
+- When the timer ends the keys switch on by themselves. Unlock is always one click away with the mouse.
+- Raycast and Shortcuts can open `keypause://start` and `keypause://stop`.
+
+## Install
+
+- Homebrew: `brew install --cask destucr/tap/keypause`
+- Direct download: https://github.com/destucr/Keypause/releases/latest/download/Keypause.dmg
+- Requirements: Apple silicon Mac, macOS 14 or later. The first time, right click the app and choose Open, then allow Keypause in System Settings, Privacy & Security, Accessibility.
+
+## Privacy
+
+Keypause never reads, stores or sends keystrokes. Its only network request is an optional update check against the project's public GitHub releases, at most once a day, and it sends nothing about the user.
+
+## Links
+
+- [Website and live demo](https://destucr.github.io/Keypause/): try the lock in the browser without installing
+- [Source code and README](https://github.com/destucr/Keypause)
+- [Releases](https://github.com/destucr/Keypause/releases)
+- [Issues](https://github.com/destucr/Keypause/issues)
