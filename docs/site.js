@@ -89,3 +89,11 @@
   window.addEventListener('scroll', paint, { passive: true });
   window.addEventListener('resize', paint);
 })();
+
+/* the Product Hunt badge image is cached for 4 hours per address; a time bucketed address makes the count refresh every 10 minutes */
+(function () {
+  var img = document.querySelector('.ph img');
+  if (!img) return;
+  var t = Math.floor(Date.now() / 600000) * 600000;
+  img.src = img.src.replace(/([?&]t=)\d+/, '$1' + t);
+})();
